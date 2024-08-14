@@ -49,7 +49,7 @@ Bu layihə **React** və **Express** istifadə edərək hazırlanmış sadə, la
 1. Repozitoriyanı klonlayın.
 2. `npm install` ilə asılılıqları quraşdırın.
 3. MongoDB bağlantısı və JWT üçün mühit dəyişənlərini qurun.
-4. Backend serverini `npm run start` ilə işə salın.
+4. Backend serverini `npm run dev` ilə işə salın.
 5. Frontend tətbiqini `npm run start` ilə başladın.
 
 ## Gələcək Təkmilləşdirmələr
