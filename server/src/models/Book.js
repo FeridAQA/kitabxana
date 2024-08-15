@@ -22,7 +22,7 @@ const bookSchema = new mongoose.Schema({
         date: { type: Date, default: Date.now }
     }],
     quantity: { type: Number, required: true }, // Kitabın sayı
-    createdAt: { type: Date, default: Date.now } // Yaradılma tarixi
-});
+
+}, { timestamps: true });
 
 module.exports = mongoose.model('Book', bookSchema);
