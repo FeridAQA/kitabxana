@@ -3,6 +3,8 @@ const app = express()
 const cors = require('cors')
 const connectDB = require('./src/database/index')
 
+const routes=require('./src/routes')
+
 app.use(cors())
 app.use(express.json())
 
@@ -12,6 +14,8 @@ const Book = require('./src/models/Book')
 app.get('/', (req, res) => {
     res.send('Hello World')
 })
+
+app.use('/api/', routes)
 
 app.post('/c', async (req, res) => {
     const { title,

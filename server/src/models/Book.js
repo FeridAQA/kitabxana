@@ -4,8 +4,7 @@ const bookSchema = new mongoose.Schema({
     title: { type: String, required: true },
     author: { type: String, required: true },
     description: { type: String },
-    category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
-    isbn: { type: String },
+    categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
     publishedDate: { type: Date },
     coverImage: { type: String }, // Kitabın qapaq şəkli üçün URL
     purchasePrice: { type: Number, required: true }, // Satış qiyməti
@@ -21,7 +20,9 @@ const bookSchema = new mongoose.Schema({
         userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
         comment: { type: String },
         date: { type: Date, default: Date.now }
-    }]
+    }],
+    quantity: { type: Number, required: true }, // Kitabın sayı
+    createdAt: { type: Date, default: Date.now } // Yaradılma tarixi
 });
 
 module.exports = mongoose.model('Book', bookSchema);
