@@ -1,5 +1,5 @@
 const { default: mongoose } = require("mongoose");
-const { AllBook, createBook, delBook, BookById } = require("../services/book.service")
+const { AllBook, createBook, delBook, BookById, updateBook } = require("../services/book.service")
 
 
 const C_BookAll = async (req, res) => {
@@ -20,6 +20,7 @@ const C_createBook = async (req, res) => {
   }
 }
 
+// delete controoler
 const C_delBook = async (req, res) => {
   try {
     const { id } = req.params;
@@ -43,10 +44,35 @@ const C_delBook = async (req, res) => {
   }
 };
 
+// update 
+const C_updateBook = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).send({ message: 'Yanlış ID formatı' });
+    }
+    // Kitabın mövcud olub olmadığını yoxlamaq üçün əvv
+    let book = await BookById(id);
+    
+    
+    if (book) {
+      // Kitabı güncəlləyirik
+      let updatedBook = await updateBook(id, req.body);
+      return res.status(200).json({ message: 'Kitab uğurla güncəndi', updatedBook })
+    } else {
+      return res.status(404).json({ message: 'Kitab tapılmadı' });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Server xətası ooo', error });
+  }
+}
+
 module.exports = {
   C_BookAll,
   C_createBook,
-  C_delBook
+  C_delBook,
+  C_updateBook
 
 
 };

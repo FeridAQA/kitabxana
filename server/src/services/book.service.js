@@ -35,9 +35,28 @@ const delBook = async (id) => {
     return book; // Kitab tapıldıqda və uğurla silindikdə qaytarılır
 };
 
+
+// update book
+const updateBook = async (id, params) => {
+    const { title, author, description,
+        categories, publishedDate, coverImage,
+        purchasePrice, rentalPrice, availableForPurchase,
+        availableForRent, quantity } = params
+    const book = await Book.findByIdAndUpdate(id, {
+        title, author, description,
+        categories, publishedDate, coverImage,
+        purchasePrice, rentalPrice, availableForPurchase,
+        availableForRent, quantity
+    }, { new: true })
+    return book;
+}
+
+
+
 module.exports = {
     AllBook,
     createBook,
     delBook,
     BookById,
+    updateBook,
 }
