@@ -21,7 +21,15 @@ const C_findById = async (req, res) => {
             return res.status(400).send({ message: 'Yanlış ID formatı' });
         }
         let category = await findCategoryById(id)
-        res.send(category)
+        if (!category) {
+            return res.status(404).send({ message: 'Kategori tapılmadı' });
+        }
+
+        // Əgər kategoriya tapılarsa
+        res.status(200).json(category);
+        
+
+
     }
     catch (err) {
         console.log(err);
@@ -52,9 +60,9 @@ const C_deleteCategory = async (req, res) => {
         let category = await findCategoryById(id)
         if (category) {
             let delCategory = await deleteCategory(id)
-            return res.status(200).send({ message: 'Kitab uğurla silindi', delCategory });
+            return res.status(200).send({ message: 'category uğurla silindi', delCategory });
         } else {
-            return res.status(404).send({ message: 'Kitab tapılmadı' });
+            return res.status(404).send({ message: 'category tapılmadı' });
         }
 
     }
