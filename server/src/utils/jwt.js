@@ -10,7 +10,6 @@ const decodePayload = (token) => {
         const payload = jwt.verify(token, config.jwtSecret);
         return payload;
     } catch (error) {
-        console.error("JWT Verification Error:", error.message); // Səhv mesajını konsolda göstərin
         return false;
     }
 };

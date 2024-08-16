@@ -1,12 +1,14 @@
 const express=require('express')
 const { C_BookAll, C_createBook, C_delBook, C_updateBook, C_BookById } = require('../controller/book.controller')
+const { authMiddleware } = require('../middleware/auth.middleware')
+const roleMiddleware = require('../middleware/roleMiddleware')
 
 const routes=express.Router()
 
 routes.get('/',C_BookAll) // butun kitablari getirmek 
 routes.get('/:id',C_BookById) 
-routes.post('/',C_createBook) // kitab yaratmaq 
-routes.delete('/:id',C_delBook) // kitab silmek
-routes.put('/:id',C_updateBook)
+routes.post('/',authMiddleware,roleMiddleware('admin'),C_createBook) // kitab yaratmaq 
+routes.delete('/:id',authMiddleware,roleMiddleware('admin'),C_delBook) // kitab silmek
+routes.put('/:id',authMiddleware,roleMiddleware('admin'),C_updateBook)
 
 module.exports=routes

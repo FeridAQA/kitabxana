@@ -22,7 +22,6 @@ const login = async (params) => {
 
     const payloud = {
         id: user._id,
-        role: user.role
     }
 
     const token = encodePayload(payloud)
