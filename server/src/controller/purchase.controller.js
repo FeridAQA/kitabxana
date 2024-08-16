@@ -1,4 +1,4 @@
-const { purchaseBook } = require('../services/purchase.service');
+const { purchaseBook, getPurchaseHistory, getAllPurchases } = require('../services/purchase.service');
 
 const C_purchaseBook = async (req, res) => {
     try {
@@ -13,6 +13,40 @@ const C_purchaseBook = async (req, res) => {
     }
 };
 
+const C_getPurchaseHistory = async (req, res) => {
+    try {
+        const userId = req.user._id; // Auth middleware vasitəsilə istifadəçinin ID-sini əldə edirik
+
+        const result = await getPurchaseHistory(userId);
+
+        if (result.status !== 200) {
+            return res.status(result.status).json({ message: result.message });
+        }
+
+        return res.status(200).json(result.purchases);
+    } catch (error) {
+        console.error('Server Error:', error);
+        return res.status(500).json({ message: 'Server xətası', error });
+    }
+};
+
+const C_getAllPurchases = async (req, res) => {
+    try {
+        const result = await getAllPurchases();
+
+        if (result.status !== 200) {
+            return res.status(result.status).json({ message: result.message });
+        }
+
+        return res.status(200).json(result.purchases);
+    } catch (error) {
+        console.error('Server Error:', error);
+        return res.status(500).json({ message: 'Server xətası', error });
+    }
+};
+
 module.exports = {
     C_purchaseBook,
+    C_getPurchaseHistory,
+    C_getAllPurchases,
 };

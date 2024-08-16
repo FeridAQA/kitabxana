@@ -24,6 +24,7 @@ const createUser = async (params) => {
     // İstifadəçini yaratmaq
     const user = new User({ username, email, password:hash });
     const savedUser = await user.save();
+    savedUser.password=undefined
     return savedUser;
 };
 
