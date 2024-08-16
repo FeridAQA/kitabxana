@@ -1,11 +1,9 @@
 const express=require('express')
-const { C_findAllUsers, C_findUserById, C_createUser, C_deleteUser } = require('../controller/user.controller')
+const { C_findAllUsers, C_findUserById, C_deleteUser } = require('../controller/user.controller')
 const routes=express.Router()
 
 routes.get('/',C_findAllUsers)
 routes.get('/:id',C_findUserById)
-
-routes.post('/',C_createUser)
 
 routes.delete('/:id',C_deleteUser)
 

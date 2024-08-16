@@ -1,9 +1,5 @@
 const User = require("../models/User");
-const { createUser, hasEmail } = require("../services/user.service");
 const { isValidObjectId } = require("../utils/check.id");
-
-
-
 
 const C_findAllUsers = async (req, res) => {
     try {
@@ -33,23 +29,7 @@ const C_findUserById = async (req, res) => {
 
 
 // create users
-const C_createUser = async (req, res) => {
-    try {
-        const { name, email, password } = req.body;
 
-        // Emailin mövcudluğunu yoxlamaq
-        const existingUser = await hasEmail(email);
-        if (existingUser) {
-            return res.status(400).json({ message: 'Bu email artıq istifadə olunur' });
-        }
-        let user = await createUser(req.body)
-        res.status(201).json(user);
-    } catch (error) {
-        console.log(error);
-
-        res.status(500).json({ message: error.message });
-    }
-}
 
 // del user
 const C_deleteUser = async (req, res) => {
@@ -72,7 +52,6 @@ const C_deleteUser = async (req, res) => {
 module.exports = {
     C_findAllUsers,
     C_findUserById,
-    C_createUser,
     C_deleteUser,
 
 }

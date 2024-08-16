@@ -1,5 +1,6 @@
 const User = require("../models/User")
-const bcrypt = require('bcrypt');
+const { verifyPassword } = require("../utils/bcrypt");
+const { encodePayload } = require("../utils/jwt");
 
 
 const login = async (params) => {
@@ -11,21 +12,24 @@ const login = async (params) => {
         return { error: "Email və ya parol yanlışdır", status: 401 };
     }
 
-    const isValidPassword = await bcrypt.compare(password, user.password);
+    const isValidPassword = await verifyPassword(password, user.password);
     console.log("Password is valid:", isValidPassword);
 
     if (!isValidPassword) {
         return { error: "Email və ya parol yanlışdır", status: 401 };
     }
-    user.password=undefined
+    user.password = undefined
 
-    return { user, status: 200 };
+    const payloud = {
+        id: user._id,
+        role: user.role
+    }
+
+    const token = encodePayload(payloud)
+
+    return { user, token };
 };
 
 module.exports = {
     login,
 };
-
-module.exports={
-    login,
-}
