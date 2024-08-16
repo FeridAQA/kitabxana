@@ -1,4 +1,5 @@
-const User = require("../models/User")
+const User = require("../models/User");
+const { hashPassword } = require("../utils/bcrypt");
 
 User.syncIndexes();
 
@@ -17,8 +18,11 @@ const findUserById = async (id) => {
 const createUser = async (params) => {
     const { username, email, password } = params;
 
+    // parolu hashlamaq
+    const hash = await hashPassword(password);
+
     // İstifadəçini yaratmaq
-    const user = new User({ username, email, password });
+    const user = new User({ username, email, password:hash });
     const savedUser = await user.save();
     return savedUser;
 };
