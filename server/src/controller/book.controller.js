@@ -16,7 +16,7 @@ const C_BookById = async (req, res) => {
   try {
     const { id } = req.params;
     if (!isValidObjectId(id)) {
-      return res.status(400).send({ message: 'Yanlış ID formatı' });
+      return res.status(400).send({ message: 'Yalniş ID formati' });
     }
 
     let book = await BookById(id)
@@ -24,7 +24,7 @@ const C_BookById = async (req, res) => {
       res.send(book)
     }
     else{
-      res.status(404).send({ message: 'Kitap bulunamadı' })
+      res.status(404).send({ message: 'Kitap tapilmadi' })
     }
   } catch (error) {
     console.log(error);
@@ -46,7 +46,7 @@ const C_delBook = async (req, res) => {
   try {
     const { id } = req.params;
     if (!isValidObjectId(id)) {
-      return res.status(400).send({ message: 'Yanlış ID formatı' });
+      return res.status(400).send({ message: 'Yalniş ID formati' });
     }
 
     // Kitabın mövcud olub olmadığını yoxlamaq üçün əvvəlcə onu tapırıq
@@ -70,7 +70,7 @@ const C_updateBook = async (req, res) => {
   try {
     const { id } = req.params;
     if (!isValidObjectId(id)) {
-      return res.status(400).send({ message: 'Yanlış ID formatı' });
+      return res.status(400).send({ message: 'Yalniş ID formati' });
     }
     // Kitabın mövcud olub olmadığını yoxlamaq üçün əvv
     let book = await BookById(id);

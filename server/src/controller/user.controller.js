@@ -56,7 +56,7 @@ const C_deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
         if (!isValidObjectId(id)) {
-            return res.status(400).send({ message: 'Yanlış ID formatı' });
+            return res.status(400).send({ message: 'Yalniş ID formatı' });
         }
         const user = await User.findByIdAndDelete(id);
         if (!user) {
