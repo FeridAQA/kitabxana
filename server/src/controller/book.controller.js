@@ -1,5 +1,5 @@
-const { default: mongoose } = require("mongoose");
-const { AllBook, createBook, delBook, BookById, updateBook } = require("../services/book.service")
+const { AllBook, createBook, delBook, BookById, updateBook } = require("../services/book.service");
+const { isValidObjectId } = require("../utils/check.id");
 
 
 const C_BookAll = async (req, res) => {
@@ -15,7 +15,7 @@ const C_BookAll = async (req, res) => {
 const C_BookById = async (req, res) => {
   try {
     const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!isValidObjectId(id)) {
       return res.status(400).send({ message: 'Yanlış ID formatı' });
     }
 
@@ -45,7 +45,7 @@ const C_createBook = async (req, res) => {
 const C_delBook = async (req, res) => {
   try {
     const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!isValidObjectId(id)) {
       return res.status(400).send({ message: 'Yanlış ID formatı' });
     }
 
@@ -69,7 +69,7 @@ const C_delBook = async (req, res) => {
 const C_updateBook = async (req, res) => {
   try {
     const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!isValidObjectId(id)) {
       return res.status(400).send({ message: 'Yanlış ID formatı' });
     }
     // Kitabın mövcud olub olmadığını yoxlamaq üçün əvv

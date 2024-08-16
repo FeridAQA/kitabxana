@@ -1,6 +1,6 @@
-const { default: mongoose } = require("mongoose");
 const User = require("../models/User");
 const { createUser, hasEmail } = require("../services/user.service");
+const { isValidObjectId } = require("../utils/check.id");
 
 
 
@@ -18,7 +18,7 @@ const C_findAllUsers = async (req, res) => {
 const C_findUserById = async (req, res) => {
     try {
         const { id } = req.params;
-        if (!mongoose.Types.ObjectId.isValid(id)) {
+        if (!isValidObjectId(id)) {
             return res.status(400).send({ message: 'Yanlış ID formatı' });
         }
         const user = await User.findById(id);
@@ -55,7 +55,7 @@ const C_createUser = async (req, res) => {
 const C_deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
-        if (!mongoose.Types.ObjectId.isValid(id)) {
+        if (!isValidObjectId(id)) {
             return res.status(400).send({ message: 'Yanlış ID formatı' });
         }
         const user = await User.findByIdAndDelete(id);
