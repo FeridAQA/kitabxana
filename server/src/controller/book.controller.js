@@ -11,6 +11,27 @@ const C_BookAll = async (req, res) => {
   }
 }
 
+// find by id
+const C_BookById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).send({ message: 'Yanlış ID formatı' });
+    }
+
+    let book = await BookById(id)
+    if (book) {
+      res.send(book)
+    }
+    else{
+      res.status(404).send({ message: 'Kitap bulunamadı' })
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
 const C_createBook = async (req, res) => {
   try {
     let book = await createBook(req.body)
@@ -53,8 +74,8 @@ const C_updateBook = async (req, res) => {
     }
     // Kitabın mövcud olub olmadığını yoxlamaq üçün əvv
     let book = await BookById(id);
-    
-    
+
+
     if (book) {
       // Kitabı güncəlləyirik
       let updatedBook = await updateBook(id, req.body);
@@ -70,6 +91,7 @@ const C_updateBook = async (req, res) => {
 
 module.exports = {
   C_BookAll,
+  C_BookById,
   C_createBook,
   C_delBook,
   C_updateBook
