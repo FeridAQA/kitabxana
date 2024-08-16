@@ -61,8 +61,10 @@ const getAllPurchases = async () => {
         if (purchases.length === 0) {
             return { message: 'Heç bir satınalma tapılmadı', status: 404 };
         }
+        const totalRevenue = purchases.reduce((acc, purchase) => acc + purchase.totalAmount, 0);
 
-        return { purchases, status: 200 };
+
+        return { totalRevenue,purchases, status: 200 };
     } catch (error) {
         return { message: error.message, status: 500 };
     }

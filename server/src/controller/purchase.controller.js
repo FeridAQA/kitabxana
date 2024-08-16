@@ -2,10 +2,10 @@ const { purchaseBook, getPurchaseHistory, getAllPurchases } = require('../servic
 
 const C_purchaseBook = async (req, res) => {
     try {
-        const { bookId, quantity,price} = req.body;
+        const { bookId, quantity, price } = req.body;
         const userId = req.user._id; // İstifadəçi ID-sini authMiddleware vasitəsilə alırıq
 
-        const purchase = await purchaseBook(userId, bookId, quantity,price);
+        const purchase = await purchaseBook(userId, bookId, quantity, price);
 
         res.status(201).json({ message: 'Kitab uğurla satın alındı', purchase });
     } catch (error) {
@@ -38,7 +38,10 @@ const C_getAllPurchases = async (req, res) => {
             return res.status(result.status).json({ message: result.message });
         }
 
-        return res.status(200).json(result.purchases);
+        return res.status(200).json({
+            purchases: result.purchases,
+            totalRevenue: result.totalRevenue
+        });
     } catch (error) {
         console.error('Server Error:', error);
         return res.status(500).json({ message: 'Server xətası', error });
