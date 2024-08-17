@@ -6,7 +6,8 @@ const purchaseSchema = new mongoose.Schema({
     purchaseDate: { type: Date, default: Date.now }, // Satın alma tarixi
     quantity: { type: Number, required: true }, // Satın alınan kitabın ədədi
     price: { type: Number, required: true }, // Kitabın alınan qiyməti (Book modelindən gəlir)
-    totalAmount: { type: Number, required: true } // Toplam məbləğ (quantity * price)
+    totalAmount: { type: Number, required: true }, // Toplam məbləğ (quantity * price)
+    isDeleted: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model('Purchase', purchaseSchema);

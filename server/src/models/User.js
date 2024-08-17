@@ -8,7 +8,11 @@ const userSchema = new mongoose.Schema({
     role: { type: String, enum: ['admin', 'user'], default: 'user' }, // Admin və ya adi istifadəçi
     registeredDate: { type: Date, default: Date.now },
     rentedBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Rental' }], // İcarəyə götürülmüş kitablar
-    purchasedBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Purchase' }] // Satın alınmış kitablar
+    purchasedBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Purchase' }], // Satın alınmış kitablar
+
+    basket: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }],
+    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }]
+    
 });
 
 
