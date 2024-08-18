@@ -10,14 +10,9 @@ const userSchema = new mongoose.Schema({
     rentedBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Rental' }], // İcarəyə götürülmüş kitablar
     purchasedBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Purchase' }], // Satın alınmış kitablar
 
-    basket: [
-        {
-            bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }, // Kitabın ID-si
-            quantity: { type: Number, required: true, default: 1 } // Kitabın miqdarı
-        }
-    ],
-    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }]
-    
+    basket: [],
+    wishlist: []
+
 });
 
 module.exports = mongoose.model('User', userSchema);

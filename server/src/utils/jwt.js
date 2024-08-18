@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const config = require("../config");
 
 const encodePayload = (payload) => {
-    return jwt.sign(payload, config.jwtSecret, { expiresIn: '1h' });
+    return jwt.sign(payload, config.jwtSecret, { expiresIn: '3h' });
 };
 
 const decodePayload = (token) => {

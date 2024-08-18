@@ -19,6 +19,7 @@ const login = async (params) => {
         return { error: "Email və ya parol yanlışdır", status: 401 };
     }
     user.password = undefined
+    
 
     const payloud = {
         id: user._id,
@@ -26,7 +27,7 @@ const login = async (params) => {
 
     const token = encodePayload(payloud)
 
-    return { user, token };
+    return { token };
 };
 
 module.exports = {
