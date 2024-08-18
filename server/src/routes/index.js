@@ -6,6 +6,8 @@ const user_route=require('./user.route')
 const category_route=require('./category.route')
 const auth_route=require('./auth.route');
 const purchase_route=require('./purchase.route');
+//review
+const review_route=require('./review.route')
 
 
 const { authMiddleware } = require("../middleware/auth.middleware");
@@ -16,6 +18,7 @@ router.use('/user',authMiddleware,roleMiddleware('admin'),user_route)
 router.use('/category',category_route)
 router.use('/auth',auth_route)
 router.use('/porchase',authMiddleware,purchase_route)
+router.use('/review',authMiddleware,review_route)
 
 
 module.exports=router

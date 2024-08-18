@@ -1,5 +1,4 @@
 const { default: mongoose } = require("mongoose");
-const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, },
@@ -11,8 +10,9 @@ const userSchema = new mongoose.Schema({
     purchasedBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Purchase' }], // Satın alınmış kitablar
 
     basket: [],
-    wishlist: []
+    wishlist: [],
 
+    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }]
 });
 
 module.exports = mongoose.model('User', userSchema);
