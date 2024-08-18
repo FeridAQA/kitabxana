@@ -10,25 +10,14 @@ const userSchema = new mongoose.Schema({
     rentedBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Rental' }], // İcarəyə götürülmüş kitablar
     purchasedBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Purchase' }], // Satın alınmış kitablar
 
-    basket: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }],
+    basket: [
+        {
+            bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }, // Kitabın ID-si
+            quantity: { type: Number, required: true, default: 1 } // Kitabın miqdarı
+        }
+    ],
     wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }]
     
 });
-
-
-// userSchema.pre('save', async function (next) {
-//     if (!this.isModified('password')) {
-//         return next();
-//     }
-
-//     try {
-//         // Parolu haşlamaq üçün bcrypt istifadə olunur
-//         const salt = await bcrypt.genSalt(10);
-//         this.password = await bcrypt.hash(this.password, salt);
-//         next();
-//     } catch (err) {
-//         next(err);
-//     }
-// });
 
 module.exports = mongoose.model('User', userSchema);
