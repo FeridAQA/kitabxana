@@ -38,24 +38,29 @@ const C_getPurchaseHistory = async (req, res) => {
 const C_deletePurchase = async (req, res) => {
     try {
         const { id } = req.params;
+        
         if (!isValidObjectId(id)) {
             return res.status(400).send({ message: 'Yalnış ID formatı' });
         }
-        
-        const purchase = await Purchase.findByIdAndUpdate(
-            id,
-            { isDeleted: true },
-            { new: true }
-        );
-        if (!purchase || purchase.isDeleted === true) {
+
+        // Satınalma tapılır
+        const purchase = await Purchase.findById(id);
+
+        // Əgər satınalma tapılmasa və ya artıq silinmişdirsə
+        if (!purchase || purchase.isDeleted) {
             return res.status(404).json({ message: 'Satınalma tapılmadı və ya artıq silinmişdir.' });
         }
+
+        // Satınalma tapılıbsa və silinməyibsə, isDeleted dəyəri true olaraq dəyişdirilir
+        purchase.isDeleted = true;
+        await purchase.save();
 
         return res.status(200).json({ message: 'Satınalma uğurla silindi (soft delete)', purchase });
     } catch (error) {
         return res.status(500).json({ message: 'Server xətası', error });
     }
-}
+};
+
 
 
 //admin
