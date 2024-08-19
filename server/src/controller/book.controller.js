@@ -1,4 +1,4 @@
-const { AllBook, createBook, delBook, BookById, updateBook } = require("../services/book.service");
+const { AllBook, createBook, delBook, BookById, updateBook, filterBooks } = require("../services/book.service");
 const { isValidObjectId } = require("../utils/check.id");
 
 
@@ -23,7 +23,7 @@ const C_BookById = async (req, res) => {
     if (book) {
       res.send(book)
     }
-    else{
+    else {
       res.status(404).send({ message: 'Kitap tapilmadi' })
     }
   } catch (error) {
@@ -90,12 +90,44 @@ const C_updateBook = async (req, res) => {
   }
 }
 
+
+// filter
+const C_filterBook = async (req, res) => {
+  try {
+    const { category, language, minPrice, maxPrice } = req.query;
+    const filters = {};
+    // Filtrləri yalnız seçilmişsə əlavə edin
+    if (category) {
+      filters.category = category;
+    }
+
+    if (language) {
+      filters.language = language;
+    }
+
+
+    if (minPrice && maxPrice) {
+      filters.purchasePrice = { $gte: parseFloat(minPrice), $lte: parseFloat(maxPrice) };
+    } else if (minPrice) {
+      filters.purchasePrice = { $gte: parseFloat(minPrice) };
+    } else if (maxPrice) {
+      filters.purchasePrice = { $lte: parseFloat(maxPrice) };
+    }
+
+    const books = await filterBooks(filters);
+    return res.status(200).json({ books });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Server xətası ooo', error });
+  }
+}
+
+
 module.exports = {
   C_BookAll,
   C_BookById,
   C_createBook,
   C_delBook,
-  C_updateBook
-
-
+  C_updateBook,
+  C_filterBook,
 };

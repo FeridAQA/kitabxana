@@ -55,10 +55,19 @@ const updateBook = async (id, params) => {
 
 
 
+
+// filter
+const filterBooks = async (params) => {
+    return await Book.find(params)
+}
+
+
+
 module.exports = {
     AllBook,
     createBook,
     delBook,
     BookById,
     updateBook,
+    filterBooks,
 }
