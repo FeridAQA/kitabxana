@@ -1,9 +1,11 @@
 const Book = require("../models/Book")
 
 // find butun booklar 
-const AllBook = async () => {
+const AllBook = async (limit, offset) => {
     const Books = await Book.find()
-    return Books
+        .skip(parseInt(offset))
+        .limit(parseInt(limit));
+    return Books;
 }
 
 // find book by id

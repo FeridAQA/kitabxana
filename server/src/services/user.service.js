@@ -3,8 +3,10 @@ const { hashPassword } = require("../utils/bcrypt");
 
 User.syncIndexes();
 
-const findAllUsers = async () => {
+const findAllUsers = async (limit, offset) => {
     const Users = await User.find()
+    .skip(parseInt(offset))
+    .limit(parseInt(limit));
     return Users
 }
 

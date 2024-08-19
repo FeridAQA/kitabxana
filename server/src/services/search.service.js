@@ -1,4 +1,5 @@
 const Book = require("../models/Book");
+const User = require("../models/User");
 
 const searchBooks = async (searchTerm) => {
     // Axtarış kriteriyasını müəyyən edirik
@@ -16,6 +17,25 @@ const searchBooks = async (searchTerm) => {
     return books;
 };
 
+//for admin
+
+const searchUsers = async (searchTerm) => {
+    // Axtarış kriteriyasını müəyyən edirik
+    const searchCriteria = {
+        $or: [
+            { username: { $regex: searchTerm, $options: 'i' } },   // Username-ə görə axtarış
+            { email: { $regex: searchTerm, $options: 'i' } }       // Email-ə görə axtarış
+        ]
+    };
+
+    // Verilən kriteriyaya görə istifadəçiləri axtarırıq
+    const users = await User.find(searchCriteria);
+
+    return users;
+};
+
+
 module.exports={
     searchBooks,
+    searchUsers,
 }

@@ -4,7 +4,8 @@ const { isValidObjectId } = require("../utils/check.id");
 
 const C_BookAll = async (req, res) => {
   try {
-    let books = await AllBook(req.body)
+    const { limit = 20, offset = 0 } = req.query;
+    let books = await AllBook(limit, offset)
     res.send(books)
   } catch (error) {
     console.log(error);
