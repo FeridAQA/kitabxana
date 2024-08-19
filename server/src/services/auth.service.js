@@ -18,7 +18,7 @@ const login = async (params) => {
     if (!isValidPassword) {
         return { error: "Email və ya parol yanlışdır", status: 401 };
     }
-    user.password = undefined
+   
     
 
     const payloud = {

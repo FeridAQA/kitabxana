@@ -45,9 +45,18 @@ const getReviewsByBook = async (bookId) => {
     return reviews;
 };
 
+
+// for admin
+const getAllReviewsByUser = async (userId) => {
+    const reviews = await Review.find({ user: userId }).populate('book', 'title');
+    return reviews;
+};
+
+
 module.exports = {
     addReview,
     updateReview,
     deleteReview,
-    getReviewsByBook
+    getReviewsByBook,
+    getAllReviewsByUser
 };

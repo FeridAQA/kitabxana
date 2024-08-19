@@ -2,7 +2,8 @@ const {
     addReview,
     updateReview,
     deleteReview,
-    getReviewsByBook
+    getReviewsByBook,
+    getAllReviewsByUser
 } = require('../services/review.service');
 
 // Kitaba şərh və qiymətləndirmə əlavə etmək
@@ -68,9 +69,26 @@ const C_getReviewsByBook = async (req, res) => {
     }
 };
 
+
+// for admin
+const C_getAllReviewsByUser = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        // İstifadəçiyə aid bütün şərhləri alırıq
+        const reviews = await getAllReviewsByUser(userId);
+
+        res.json(reviews);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+
 module.exports = {
     C_addReview,
     C_updateReview,
     C_deleteReview,
-    C_getReviewsByBook
+    C_getReviewsByBook,
+    C_getAllReviewsByUser
 };

@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import './App.css'
 
 function App() {
@@ -8,26 +8,40 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+     <Formik
+       initialValues={{ firstName: '', lastName: '', email: '' }}
+       validationSchema={Yup.object({
+         firstName: Yup.string()
+           .max(15, 'Must be 15 characters or less')
+           .required('Required'),
+         lastName: Yup.string()
+           .max(20, 'Must be 20 characters or less')
+           .required('Required'),
+         email: Yup.string().email('Invalid email address').required('Required'),
+       })}
+       onSubmit={(values, { setSubmitting }) => {
+         setTimeout(() => {
+           alert(JSON.stringify(values, null, 2));
+           setSubmitting(false);
+         }, 400);
+       }}
+     >
+       <Form>
+         <label htmlFor="firstName">First Name</label>
+         <Field name="firstName" type="text" />
+         <ErrorMessage name="firstName" />
+ 
+         <label htmlFor="lastName">Last Name</label>
+         <Field name="lastName" type="text" />
+         <ErrorMessage name="lastName" />
+ 
+         <label htmlFor="email">Email Address</label>
+         <Field name="email" type="email" />
+         <ErrorMessage name="email" />
+ 
+         <button type="submit">Submit</button>
+       </Form>
+     </Formik>
     </>
   )
 }
