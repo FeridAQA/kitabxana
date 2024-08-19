@@ -15,12 +15,12 @@ const BookById = async (id) => {
 // crate book 
 const createBook = async (params) => {
     const { title, author, description,
-        categories, publishedDate, coverImage,
+        categories,language, publishedDate, coverImage,
         purchasePrice, rentalPrice, availableForPurchase,
         availableForRent, quantity } = params
     const book = new Book({
         title, author, description,
-        categories, publishedDate, coverImage,
+        categories,language, publishedDate, coverImage,
         purchasePrice, rentalPrice, availableForPurchase,
         availableForRent, quantity
     })
@@ -41,12 +41,12 @@ const delBook = async (id) => {
 // update book
 const updateBook = async (id, params) => {
     const { title, author, description,
-        categories, publishedDate, coverImage,
+        categories,language, publishedDate, coverImage,
         purchasePrice, rentalPrice, availableForPurchase,
         availableForRent, quantity } = params
     const book = await Book.findByIdAndUpdate(id, {
         title, author, description,
-        categories, publishedDate, coverImage,
+        categories,language, publishedDate, coverImage,
         purchasePrice, rentalPrice, availableForPurchase,
         availableForRent, quantity
     }, { new: true })
