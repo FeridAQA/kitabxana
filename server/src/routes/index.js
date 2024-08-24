@@ -8,8 +8,10 @@ const auth_route=require('./auth.route');
 const purchase_route=require('./purchase.route');
 const review_route=require('./review.route')
 const search_route=require('./search.route')
-// filter
 const filter_route=require('./filter.route')
+const popular_route=require('./popular.route')
+//bestsell
+const bestsell_route=require('./bestSell.route')
 
 
 const { authMiddleware } = require("../middleware/auth.middleware");
@@ -23,5 +25,7 @@ router.use('/porchase',authMiddleware,purchase_route)
 router.use('/review',review_route)
 router.use('/search',search_route)
 router.use('/filter',filter_route)
+router.use('/popular',popular_route)
+router.use('/bestsell',bestsell_route)
 
 module.exports=router
