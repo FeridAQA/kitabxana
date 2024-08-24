@@ -30,6 +30,8 @@ const getBestSellingBooks = async () => {
                 title: "$bookDetails.title",
                 author: "$bookDetails.author",
                 bookImage: "$bookDetails.coverImage", // Kitabın şəklini əlavə edirik
+                price:"$bookDetails.purchasePrice",
+                description:"$bookDetails.description",
                 totalSold: 1
             }
         },

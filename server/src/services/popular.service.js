@@ -30,6 +30,7 @@ const getPopularBooksByRating = async () => {
                 title: "$bookDetails.title",
                 author: "$bookDetails.author",
                 bookImage: "$bookDetails.coverImage",
+                price:"$bookDetails.purchasePrice",
                 averageRating: 1,
                 totalReviews: 1
             }
