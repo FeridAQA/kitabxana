@@ -33,8 +33,10 @@ function H_all() {
   };
 
   return (
-    <div id='H_all'>
-      <h2>Son ktiablar</h2>
+    <div id='H_all '>
+      <div className="container">
+      <h2>Son kitablar</h2>
+      </div>
       <div className="all-books-container">
         {books.map((book) => (
           <div key={book._id} className="book-item">
