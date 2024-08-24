@@ -3,6 +3,7 @@ const Book = require("../models/Book")
 // find butun booklar 
 const AllBook = async (limit, offset) => {
     const Books = await Book.find()
+        .sort({ createdAt: -1 })
         .skip(parseInt(offset))
         .limit(parseInt(limit));
     return Books;
@@ -17,12 +18,12 @@ const BookById = async (id) => {
 // crate book 
 const createBook = async (params) => {
     const { title, author, description,
-        categories,language, publishedDate, coverImage,
+        categories, language, publishedDate, coverImage,
         purchasePrice, rentalPrice, availableForPurchase,
         availableForRent, quantity } = params
     const book = new Book({
         title, author, description,
-        categories,language, publishedDate, coverImage,
+        categories, language, publishedDate, coverImage,
         purchasePrice, rentalPrice, availableForPurchase,
         availableForRent, quantity
     })
@@ -43,12 +44,12 @@ const delBook = async (id) => {
 // update book
 const updateBook = async (id, params) => {
     const { title, author, description,
-        categories,language, publishedDate, coverImage,
+        categories, language, publishedDate, coverImage,
         purchasePrice, rentalPrice, availableForPurchase,
         availableForRent, quantity } = params
     const book = await Book.findByIdAndUpdate(id, {
         title, author, description,
-        categories,language, publishedDate, coverImage,
+        categories, language, publishedDate, coverImage,
         purchasePrice, rentalPrice, availableForPurchase,
         availableForRent, quantity
     }, { new: true })
