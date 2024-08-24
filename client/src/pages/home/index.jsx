@@ -9,8 +9,8 @@ import H_pop from '../../components/H_pop'
 function Home() {
   return (
     <div>
-        <H_Best></H_Best>
         <H_pop></H_pop>
+        <H_Best></H_Best>
         <H_all></H_all>
         
     </div>
