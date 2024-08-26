@@ -9,7 +9,7 @@ import Mainlayout from './layout/mainlayout';
 function App() {
 
   return (
-    <>
+    <div class="bg-white text-black">
       <HelmetProvider>
         <BrowserRouter>
           <Routes>
@@ -22,7 +22,7 @@ function App() {
         </BrowserRouter>
       </HelmetProvider>
 
-    </>
+    </div>
   )
 }
 
