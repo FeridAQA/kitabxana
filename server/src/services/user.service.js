@@ -5,6 +5,7 @@ User.syncIndexes();
 
 const findAllUsers = async (limit, offset) => {
     const Users = await User.find()
+    .sort({ registeredDate: -1 })
     .skip(parseInt(offset))
     .limit(parseInt(limit));
     return Users

@@ -13,7 +13,8 @@ const AllBook = async (limit, offset) => {
 // find book by id
 
 const BookById = async (id) => {
-    return await Book.findById(id);
+    return await Book.findById(id)
+    .populate('categories', 'name')
 };
 
 // crate book 

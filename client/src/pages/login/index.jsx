@@ -1,44 +1,45 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Modal from '../../components/Modal'; // Modal komponentini import edirik
+import Modal from '../../components/Modal';
 
-function Sign_in() {
-    const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        password: '',
-    });
+function Login() {
+    const [formData, setFormData] = useState({ email: '', password: '' });
     const [modal, setModal] = useState({ isOpen: false, message: '' });
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:3000/api/auth/register', formData);
-            if (response.status === 201) {
-                navigate('/login'); // Uğurlu qeydiyyat olduqda Login səhifəsinə yönləndirilir
+            const response = await axios.post('http://localhost:3000/api/auth/login', formData);
+
+            if (response.data.token) {
+                localStorage.setItem('token', response.data.token); // Token-i birbaşa localStorage-ə yazır
+                navigate('/'); // Uğurlu login sonrası ana səhifəyə yönləndirir
             }
         } catch (error) {
-            let errorMessage = 'Error registering user. Please try again.';
-            if (error.response && error.response.data && error.response.data.message) {
+            let errorMessage;
+
+            if (error.response && error.response.status === 401) {
+                errorMessage = error.response.data.message || 'Email və ya parol yanlışdır';
+            } else if (error.response && error.response.data && error.response.data.message) {
                 errorMessage = error.response.data.message;
+            } else {
+                errorMessage = 'Giriş zamanı bir xəta baş verdi. Xahiş edirik, yenidən cəhd edin.';
             }
+
             setModal({ isOpen: true, message: errorMessage });
-            console.error('Error registering user:', error);
+            console.error('Error logging in user:', error);
         }
     };
 
-    const closeModal = () => setModal({ isOpen: false, message: '' });
+    const closeModal = () => setModal({ ...modal, isOpen: false });
 
     return (
         <div className="flex min-h-screen items-center justify-center px-6 py-12 lg:px-8 bg-black relative">
@@ -56,29 +57,12 @@ function Sign_in() {
                     className="mx-auto h-10 w-auto"
                 />
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
-                    Sign in to your account
+                    Login to your account
                 </h2>
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <label htmlFor="username" className="block text-sm font-medium leading-6 text-white">
-                            Username
-                        </label>
-                        <div className="mt-2">
-                            <input
-                                id="username"
-                                name="username"
-                                type="text"
-                                value={formData.username}
-                                onChange={handleChange}
-                                required
-                                className="pl-4 block w-full rounded-md border-0 py-1.5 text-white placeholder-white shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            />
-                        </div>
-                    </div>
-
                     <div>
                         <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
                             Email address
@@ -131,10 +115,19 @@ function Sign_in() {
                         </button>
                     </div>
                 </form>
+                <div className="mt-6 text-center">
+                    <button
+                        onClick={() => navigate('/singin')}
+                        className="text-sm text-indigo-600 hover:text-indigo-500"
+                    >
+                        Don’t have an account? Register
+                    </button>
+                </div>
             </div>
+
             <Modal isOpen={modal.isOpen} onClose={closeModal} message={modal.message} />
         </div>
     );
 }
 
-export default Sign_in;
+export default Login;

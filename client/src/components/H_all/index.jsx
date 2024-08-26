@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import config from '../../config';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppContext } from '../../context/App.contex';
+import toast, { Toaster } from 'react-hot-toast';
 
 function H_all() {
   const [books, setBooks] = useState([]);
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(12);
 
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchBooks = async () => {
       try {
@@ -30,8 +34,39 @@ function H_all() {
     setLimit(10);
   };
 
+  const { addToBasket, toggleWishlist } = useAppContext();
+
+  const handleAddToBasket = (book) => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      navigate('/login');
+    } else {
+      addToBasket(book);
+      toast.success(`${book.title} səbətə əlavə olundu!`);
+    }
+  };
+
+  const handleToggleWishlist = (book) => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        navigate('/login');
+    } else {
+        const action = toggleWishlist(book);
+
+        if (action === 'added') {
+            toast.success(`${book.title} wishlist-ə əlavə olundu!`);
+        } else if (action === 'removed') {
+            toast.error(`${book.title} wishlist-dən çıxarıldı!`);
+        }
+    }
+};
+
+
   return (
     <div className="mb-10 bg-white text-black">
+      <Toaster position="bottom-right" reverseOrder={false} />
       <div className="container mx-auto px-4 py-6 bg-opacity-90 rounded-lg shadow-lg">
         <div className="flex items-center">
           <i className="fas fa-book text-black text-3xl mr-2"></i>
@@ -57,12 +92,14 @@ function H_all() {
                 <div className="absolute inset-0 flex items-end justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="card-actions mb-4 space-x-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                     <button className="btn btn-primary btn-circle">
-                      <i className="fas fa-info-circle"></i>
+                      <Link to={`/${book._id}`}>
+                        <i className="fas fa-info-circle"></i>
+                      </Link>
                     </button>
-                    <button className="btn btn-secondary btn-circle">
+                    <button onClick={() => handleAddToBasket(book)} className="btn btn-secondary btn-circle">
                       <i className="fas fa-shopping-cart"></i>
                     </button>
-                    <button className="btn btn-warning btn-circle">
+                    <button onClick={() => handleToggleWishlist(book)} className="btn btn-warning btn-circle">
                       <i className="fas fa-heart"></i>
                     </button>
                   </div>
@@ -75,7 +112,6 @@ function H_all() {
                 <p className="text-sm text-gray-700 mb-1 truncate">
                   {book.author}
                 </p>
-
                 <div className="mt-auto">
                   <div className="price-and-sold mb-2 flex justify-between items-center">
                     <p className="font-semibold text-lg text-green-600">
