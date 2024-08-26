@@ -3,6 +3,7 @@ const Book = require("../models/Book")
 // find butun booklar 
 const AllBook = async (limit, offset) => {
     const Books = await Book.find()
+        .populate('categories', 'name')
         .sort({ createdAt: -1 })
         .skip(parseInt(offset))
         .limit(parseInt(limit));
