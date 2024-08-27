@@ -93,7 +93,7 @@ function SalesHistory() {
                   </td>
                   <td className="py-2 flex justify-center gap-2">
                     <button
-                      onClick={() => navigate(`/sales-history/${sale._id}`)}
+                      onClick={() => navigate(`/${sale.bookId._id}`)}
                       className="btn btn-sm btn-outline btn-primary"
                     >
                       <i className="fas fa-eye"></i>

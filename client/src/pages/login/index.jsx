@@ -15,17 +15,20 @@ function Login() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+    
         try {
             const response = await axios.post('http://localhost:3000/api/auth/login', formData);
-
+    
             if (response.data.token) {
-                localStorage.setItem('token', response.data.token); // Token-i birbaşa localStorage-ə yazır
+                const expireTime = Date.now() + 3 * 60 * 60 * 1000; // 3 saatlıq müddət
+                localStorage.setItem('token', response.data.token); // Token-i yaddaşa yazır
+                localStorage.setItem('tokenExpireTime', expireTime.toString()); // Tokenin bitmə vaxtını yaddaşa yazır
+                console.log('Token saved with expire time:', expireTime);
                 navigate('/'); // Uğurlu login sonrası ana səhifəyə yönləndirir
             }
         } catch (error) {
             let errorMessage;
-
+    
             if (error.response && error.response.status === 401) {
                 errorMessage = error.response.data.message || 'Email və ya parol yanlışdır';
             } else if (error.response && error.response.data && error.response.data.message) {
@@ -33,11 +36,13 @@ function Login() {
             } else {
                 errorMessage = 'Giriş zamanı bir xəta baş verdi. Xahiş edirik, yenidən cəhd edin.';
             }
-
+    
             setModal({ isOpen: true, message: errorMessage });
             console.error('Error logging in user:', error);
         }
     };
+    
+    
 
     const closeModal = () => setModal({ ...modal, isOpen: false });
 

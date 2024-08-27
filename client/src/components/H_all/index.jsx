@@ -3,6 +3,7 @@ import config from '../../config';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/App.contex';
 import toast, { Toaster } from 'react-hot-toast';
+import { checkTokenValidity } from '../../utils/auth';
 
 function H_all() {
   const [books, setBooks] = useState([]);
@@ -36,32 +37,35 @@ function H_all() {
 
   const { addToBasket, toggleWishlist } = useAppContext();
 
-  const handleAddToBasket = (book) => {
-    const token = localStorage.getItem('token');
 
-    if (!token) {
-      navigate('/login');
-    } else {
+  const handleAddToBasket = (book) => {
+    if (checkTokenValidity()) {
       addToBasket(book);
       toast.success(`${book.title} səbətə əlavə olundu!`);
+    } else {
+      console.log('Navigating to login due to invalid token');
+      navigate('/login');
     }
   };
+
+
+
 
   const handleToggleWishlist = (book) => {
     const token = localStorage.getItem('token');
 
     if (!token) {
-        navigate('/login');
+      navigate('/login');
     } else {
-        const action = toggleWishlist(book);
+      const action = toggleWishlist(book);
 
-        if (action === 'added') {
-            toast.success(`${book.title} wishlist-ə əlavə olundu!`);
-        } else if (action === 'removed') {
-            toast.error(`${book.title} wishlist-dən çıxarıldı!`);
-        }
+      if (action === 'added') {
+        toast.success(`${book.title} wishlist-ə əlavə olundu!`);
+      } else if (action === 'removed') {
+        toast.error(`${book.title} wishlist-dən çıxarıldı!`);
+      }
     }
-};
+  };
 
 
   return (
