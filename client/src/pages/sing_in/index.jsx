@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../../components/Modal'; // Modal komponentini import edirik
+import config from '../../config';
 
 function Sign_in() {
     const [formData, setFormData] = useState({
@@ -24,7 +25,7 @@ function Sign_in() {
         event.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:3000/api/auth/register', formData);
+            const response = await axios.post(`${config.BASE_URL}/auth/register`, formData);
             if (response.status === 201) {
                 navigate('/login'); // Uğurlu qeydiyyat olduqda Login səhifəsinə yönləndirilir
             }

@@ -1,13 +1,14 @@
-// services/bookService.js
-
 const Purchase = require("../models/Purchase");
 
 const getBestSellingBooks = async () => {
     return await Purchase.aggregate([
         {
+            $unwind: "$books" // Hər bir kitabı ayrılmaq üçün `$unwind` istifadə edirik
+        },
+        {
             $group: {
-                _id: "$bookId",
-                totalSold: { $sum: "$quantity" } // Hər kitab üçün satılan ümumi miqdar
+                _id: "$books.bookId",
+                totalSold: { $sum: "$books.quantity" } // Hər kitab üçün satılan ümumi miqdar
             }
         },
         {
@@ -22,7 +23,7 @@ const getBestSellingBooks = async () => {
             }
         },
         {
-            $unwind: "$bookDetails"
+            $unwind: "$bookDetails" // Kitab məlumatlarını ayrılmaq üçün `$unwind` istifadə edirik
         },
         {
             $project: {

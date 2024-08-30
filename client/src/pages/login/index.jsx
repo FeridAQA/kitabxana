@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../../components/Modal';
+import config from '../../config';
 
 function Login() {
     const [formData, setFormData] = useState({ email: '', password: '' });
@@ -17,7 +18,7 @@ function Login() {
         event.preventDefault();
     
         try {
-            const response = await axios.post('http://localhost:3000/api/auth/login', formData);
+            const response = await axios.post(`${config.BASE_URL}/auth/login`, formData);
     
             if (response.data.token) {
                 const expireTime = Date.now() + 3 * 60 * 60 * 1000; // 3 saatlıq müddət

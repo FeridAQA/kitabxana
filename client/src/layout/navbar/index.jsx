@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/App.contex';
 import './index.scss';
+import config from '../../config';
 
 function Navbar() {
   const { basket, wishlist, setSearchData } = useAppContext();
@@ -15,7 +16,7 @@ function Navbar() {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:3000/api/search?term=${query}`);
+      const response = await fetch(`${config.BASE_URL}/search?term=${query}`);
       const data = await response.json();
       setSearchData(data);
       console.log("bu navbardakidi", data);

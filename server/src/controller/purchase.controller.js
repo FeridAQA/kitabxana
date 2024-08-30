@@ -4,16 +4,17 @@ const { isValidObjectId } = require('../utils/check.id');
 
 const C_purchaseBook = async (req, res) => {
     try {
-        const { bookId, quantity, price } = req.body;
+        const { books } = req.body; // Gözlənilir ki, books [{ bookId, quantity }, ...] formatında olsun
         const userId = req.user._id; // İstifadəçi ID-sini authMiddleware vasitəsilə alırıq
 
-        const purchase = await purchaseBook(userId, bookId, quantity, price);
+        const purchase = await purchaseBook(userId, books);
 
-        res.status(201).json({ message: 'Kitab uğurla satın alındı', purchase });
+        res.status(201).json({ message: 'Kitablar uğurla satın alındı', purchase });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
 };
+
 
 const C_getPurchaseHistory = async (req, res) => {
     try {

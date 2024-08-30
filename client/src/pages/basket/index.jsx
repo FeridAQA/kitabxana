@@ -1,13 +1,73 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import { useAppContext } from '../../context/App.contex';
+import config from '../../config';
 
 function Basket() {
     const { basket, removeFromBasket, clearBasket, addToBasket, removeAllFromBasket } = useAppContext();
+    const [isModalOpen, setIsModalOpen] = useState(false); // Modal üçün state
+    const [error, setError] = useState(null); // Xəta üçün state
 
     const totalPrice = basket.reduce((total, item) => total + item.purchasePrice * item.count, 0);
 
+    const handleCheckout = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            setError('Token tapılmadı. Xahiş olunur yenidən daxil olun.');
+            return;
+        }
+
+        const books = basket.map(item => ({
+            bookId: item._id,
+            quantity: item.count
+        }));
+
+        try {
+            const response = await axios.post(`${config.BASE_URL}/api/porchase`, { books }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            clearBasket(); // Səbəti təmizlə
+            setIsModalOpen(false); // Modalı bağla
+            alert('Ödəmə uğurla tamamlandı!'); // Uğurlu mesajı
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.message) {
+                setError(error.response.data.message); // Backend-dən gələn mesajı göstər
+            } else {
+                setError('Ödəniş zamanı xəta baş verdi.'); // Ümumi xəta mesajı
+            }
+        }
+    };
+
     return (
         <div className="mb-10 bg-white text-black">
+            {/* Modal */}
+            {isModalOpen && (
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 className="text-xl font-semibold mb-4">Əməliyyatı həyata keçirməkdə əminsinizmi?</h3>
+                        {error && <p className="text-red-600 mb-4">{error}</p>} {/* Xəta mesajı */}
+                        <div className="flex justify-end gap-4">
+                            <button
+                                onClick={() => setIsModalOpen(false)}
+                                className="btn bg-gray-600 hover:bg-gray-800 text-white px-4 py-2 rounded-full"
+                            >
+                                Close
+                            </button>
+                            <button
+                                onClick={handleCheckout}
+                                className="btn bg-green-600 hover:bg-green-800 text-white px-4 py-2 rounded-full"
+                            >
+                                Buy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Səbət məzmunu */}
             <div className="container mx-auto px-4 py-6 bg-opacity-90 rounded-lg shadow-lg">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center">
@@ -18,16 +78,24 @@ function Basket() {
                         <p className="text-xl font-bold text-indigo-800">
                             Ümumi Qiymət: ${totalPrice.toFixed(2)}
                         </p>
-                        <button className="btn bg-indigo-600 hover:bg-indigo-800 text-white px-4 py-2 rounded-full">
+                        <button
+                            onClick={() => setIsModalOpen(true)} // Modalı açır
+                            className="btn bg-indigo-600 hover:bg-indigo-800 text-white px-4 py-2 rounded-full"
+                        >
                             Checkout
                         </button>
-                        <button onClick={clearBasket} className="btn bg-red-600 hover:bg-red-800 text-white px-4 py-2 rounded-full">
+                        <button
+                            onClick={clearBasket}
+                            className="btn bg-red-600 hover:bg-red-800 text-white px-4 py-2 rounded-full"
+                        >
                             Səbəti Təmizlə
                         </button>
                     </div>
                 </div>
                 <div className="border-t-4 border-indigo-600 mt-2"></div>
             </div>
+
+            {/* Səbətdəki məhsullar */}
             <div className="container mx-auto px-28 mt-6">
                 {basket.length === 0 ? (
                     <p className="text-center text-gray-500">Səbətiniz boşdur.</p>
