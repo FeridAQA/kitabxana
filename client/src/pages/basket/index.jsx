@@ -23,7 +23,7 @@ function Basket() {
         }));
 
         try {
-            const response = await axios.post(`${config.BASE_URL}/api/porchase`, { books }, {
+            const response = await axios.post(`${config.BASE_URL}/porchase`, { books }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
